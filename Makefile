@@ -5,14 +5,14 @@ NAME = ft_ls
 #	includes
 #---------------#
 UTILS =		utils
-INCLUDES =	includes
+INCLUDES =	include
 
 #--------------------------------------#
 #		Commande
 #-----------------------#
 RM = rm -fr
 CC = gcc
-FLAGS = -Wall -Werror -Wextra -g
+FLAGS = -Wall -Werror -Wextra -g -I $(INCLUDES)
 # FLAG_READLINE = -lreadline
 # FLAG_PHILO = -lpthread -D_REENTRANT
 # SANI_MEM = -fsanitize=address -fsanitize=leak -fsanitize=undefined
@@ -41,12 +41,12 @@ RESET = \033[0m
 #--------------------------------------#
 #		File
 #-----------------------#
-FILE_C =	main.c
+FILE_C =	main.c parsing.c fprintself.c
 
 SRC = $(addprefix $(SRCS)/, $(FILE_C))
 OBJ = $(patsubst %.c, $(OBJS)/%.o, $(FILE_C))
 
-INIT_C =
+# INIT_C = parsing
 
 # SRC_INIT = $(addprefix $(SRCS)/$(INIT)/, $(INIT_C))
 # OBJ_INIT = $(patsubst %.c, $(OBJS)/%.o, $(INIT_C))

@@ -6,17 +6,24 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/12 14:59:14 by rihoy             #+#    #+#             */
-/*   Updated: 2026/06/12 15:29:35 by rihoy            ###   ########.fr       */
+/*   Updated: 2026/06/14 01:18:31 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
+#include <unistd.h>
+#include <dirent.h>
+#include "ls.h"
+
+// void	actionPrint(t_info_ls *infoLs) {
+// 	DIR *dossier = opendir(infoLs->currentDir);
+
+// }
 
 int main(int argc, char **argv) {
-    if (argc == 1) {
-        
-    } else {
-        
-    }
-    return (0);
+	t_info_ls	infoLs = {0}; // initialisation moderne
+	(void)argc; (void)argv; (void)infoLs;
+
+	// parsingInfoLs(argv, &infoLs);
+	return (0);
 }
