@@ -6,12 +6,13 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/12 15:29:57 by rihoy             #+#    #+#             */
-/*   Updated: 2026/06/14 01:25:27 by rihoy            ###   ########.fr       */
+/*   Updated: 2026/06/14 23:11:52 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <dirent.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include "ls.h"
 
 void	setAttr(const char *str, t_info_ls *infoLs) {
@@ -44,4 +45,9 @@ void	parsingInfoLs(int argc, char **argv, t_info_ls *infoLs) {
 			
 		}
 	}
+}
+
+void	addFileList(t_info_inode **list, t_info_inode *new_node) {
+	if (!list)
+		return ;
 }
