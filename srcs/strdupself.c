@@ -1,30 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   strdupself.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/06/12 14:59:14 by rihoy             #+#    #+#             */
-/*   Updated: 2026/06/16 16:18:30 by rihoy            ###   ########.fr       */
+/*   Created: 2026/06/16 16:01:28 by rihoy             #+#    #+#             */
+/*   Updated: 2026/06/16 16:19:07 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <unistd.h>
-#include <dirent.h>
 #include "ls.h"
+#include <stdio.h>
+#include <stdlib.h>
 
-// void	actionPrint(t_info_ls *infoLs) {
-// 	DIR *dossier = opendir(infoLs->currentDir);
+char	*strdupself(const char *src)
+{
+	char	*copy;
+	size_t	len;
+	size_t	i;
 
-// }
-
-int main(const int argc, const char **argv) {
-	t_info_ls	infoLs = {0}; // initialisation moderne
-	(void)argc; (void)argv; (void)infoLs;
-
-	parsingInfoLs(argc, argv, &infoLs);
-	// parsingInfoLs(argv, &infoLs);
-	return (0);
+	i = -1;
+    len = 0;
+    while (src[len])
+        len++;
+    copy = malloc((len + 1) * sizeof(char));
+	if (copy == NULL)
+		return (NULL);
+	while (++i < len && src[i] != '\0') {
+		copy[i] = src[i];
+    }
+	copy[i] = '\0';
+	return (copy);
 }

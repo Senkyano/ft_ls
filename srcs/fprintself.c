@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/13 23:39:35 by rihoy             #+#    #+#             */
-/*   Updated: 2026/06/14 01:18:05 by rihoy            ###   ########.fr       */
+/*   Updated: 2026/06/16 14:27:11 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 #include <unistd.h>
 #include <stdio.h>
 
-int	charprint(const int fd, va_list args);
-int strprint(const int fd, va_list args);
+int		charprint(const int fd, va_list args);
+int		strprint(const int fd, va_list args);
 void	printOption(const int fd, const char option, int *lenght, va_list args);
 
 int	fprintfSelf(const int fd, const char *str, ...) {

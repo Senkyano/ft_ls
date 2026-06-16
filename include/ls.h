@@ -6,15 +6,13 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/12 15:32:44 by rihoy             #+#    #+#             */
-/*   Updated: 2026/06/14 01:11:21 by rihoy            ###   ########.fr       */
+/*   Updated: 2026/06/16 16:08:13 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 #ifndef _LS_H_
 # define _LS_H_
-
-#include <stdbool.h>
 
 typedef struct	s_info_inode t_info_inode;
 
@@ -46,7 +44,9 @@ typedef struct	s_info_ls {
 enum fileAttribute {
 	ATTR_READ_ONLY	= 1,
 	ATTR_HIDDEN		= 2,
+	ATTR_SYSTEM		= 4,
 	ATTR_EXECUTABLE	= 8,
+	ATTR_DIRECTORY	= 16,
 };
 
 typedef struct	s_info_inode {
@@ -56,7 +56,11 @@ typedef struct	s_info_inode {
 	t_info_inode	*nextFile;
 }				t_info_inode;
 
+typedef	int	(*t_func_cmplist)(void *, void *);
+
 int		fprintfSelf(const int fd, const char *str, ...);
-void	parsingInfoLs(int argc, char **argv, t_info_ls *infoLs);
+void	*parsingInfoLs(const int argc, const char **argv, t_info_ls *infoLs);
+
+char	*strdupself(const char *src);
 
 #endif
