@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/12 15:32:44 by rihoy             #+#    #+#             */
-/*   Updated: 2026/06/16 16:08:13 by rihoy            ###   ########.fr       */
+/*   Updated: 2026/06/23 18:04:56 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,9 +58,10 @@ typedef struct	s_info_inode {
 
 typedef	int	(*t_func_cmplist)(void *, void *);
 
+void	*addBackList(t_info_inode **list, char *name_file);
 int		fprintfSelf(const int fd, const char *str, ...);
 void	*parsingInfoLs(const int argc, const char **argv, t_info_ls *infoLs);
 
 char	*strdupself(const char *src);
-
+void	seeInfo(t_info_ls *infoLs);
 #endif

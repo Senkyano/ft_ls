@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/12 15:29:57 by rihoy             #+#    #+#             */
-/*   Updated: 2026/06/16 16:13:15 by rihoy            ###   ########.fr       */
+/*   Updated: 2026/06/23 18:04:38 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,8 @@ void	*parsingInfoLs(const int argc, const char **argv, t_info_ls *infoLs) {
 			if (!tmp_name_file) {
 				return (NULL);
 			}
-			printf("tmp_name_file = %s\n", tmp_name_file);
-			free(tmp_name_file);
+			addBackList(&infoLs->filesList, tmp_name_file);
+			// free(tmp_name_file);
 		}
 	}
 	return (infoLs->filesList);
@@ -68,6 +68,10 @@ void	*addCmpList(t_info_inode **list, char *name_file, t_func_cmplist cmpfunc) {
 	new_node->nameFile = name_file;
 	new_node->nextFile = NULL;
 	t_info_inode	*tmp = *list;
+	if (!tmp) {
+		tmp = new_node;
+		return (new_node);
+	}
 	while (tmp->nextFile) {
 		if (cmpfunc(tmp->nameFile, name_file) > 0) {
 			
@@ -90,8 +94,16 @@ void	*addBackList(t_info_inode **list, char *name_file) {
 	t_info_inode	*tmp = *list;
 	new_node->nameFile = name_file;
 	new_node->nextFile = NULL;
+	if (!tmp) {
+		tmp = new_node;
+		return (new_node);
+	}
 	while (tmp->nextFile)
 		tmp = tmp->nextFile;
 	tmp->nextFile = new_node;
 	return (new_node);
+}
+
+void	seeInfo(t_info_ls *infoLs) {
+	fprintfSelf(2, "Attribue Long format %s\n", (infoLs->attrLs & ATTR_LONGFORMAT ? "vraie" : "faux"));
 }

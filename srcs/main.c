@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/12 14:59:14 by rihoy             #+#    #+#             */
-/*   Updated: 2026/06/16 16:18:30 by rihoy            ###   ########.fr       */
+/*   Updated: 2026/06/23 18:05:08 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ int main(const int argc, const char **argv) {
 	(void)argc; (void)argv; (void)infoLs;
 
 	parsingInfoLs(argc, argv, &infoLs);
+	seeInfo(&infoLs);
 	// parsingInfoLs(argv, &infoLs);
 	return (0);
 }
