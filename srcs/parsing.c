@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/12 15:29:57 by rihoy             #+#    #+#             */
-/*   Updated: 2026/06/23 18:04:38 by rihoy            ###   ########.fr       */
+/*   Updated: 2026/06/25 17:16:00 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ void	*addBackList(t_info_inode **list, char *name_file) {
 	new_node->nameFile = name_file;
 	new_node->nextFile = NULL;
 	if (!tmp) {
-		tmp = new_node;
+		(*list) = new_node;
 		return (new_node);
 	}
 	while (tmp->nextFile)
@@ -104,6 +104,49 @@ void	*addBackList(t_info_inode **list, char *name_file) {
 	return (new_node);
 }
 
+void	removeElement(t_info_inode **list, void *remove) {
+	t_info_inode	*tmp;
+	t_info_inode	*prev;
+
+	if (!list || !remove || !(*list))
+		return ;
+
+	tmp = *list;
+	prev = NULL;
+	while (tmp != NULL && tmp != (t_info_inode *)remove) {
+		prev = tmp;
+		tmp = tmp->nextFile;
+	}
+
+	if (!tmp)
+		return ;
+
+	if (!prev)
+		(*list) = tmp->nextFile;
+	else
+		prev->nextFile = tmp->nextFile;
+
+	free(tmp);
+}
+
 void	seeInfo(t_info_ls *infoLs) {
-	fprintfSelf(2, "Attribue Long format %s\n", (infoLs->attrLs & ATTR_LONGFORMAT ? "vraie" : "faux"));
+	fprintfSelf(2, "Attribue Long format: %s\n",
+		(infoLs->attrLs & ATTR_LONGFORMAT ? "vraie" : "faux"));
+	fprintfSelf(2, "Attribue Recursive: %s\n",
+		(infoLs->attrLs & ATTR_RECURSIVE ? "vraie" : "faux"));
+	fprintfSelf(2, "Attribue Reverse: %s\n",
+		(infoLs->attrLs & ATTR_REVERSE ? "vraie" : "faux"));
+	fprintfSelf(2, "Attribue Sort by Time: %s\n",
+		(infoLs->attrLs & ATTR_SORTBYTIME ? "vraie" : "faux"));
+	fprintfSelf(2, "Attribue All: %s\n",
+		(infoLs->attrLs & ATTR_ALL ? "vraie" : "faux"));
+	
+	t_info_inode	*tmp;
+	tmp = infoLs->filesList;
+	if (!tmp)
+		fprintfSelf(2, "Null \n");
+	while (tmp) {
+		fprintfSelf(2, "file : %s\n", tmp->nameFile);
+		tmp = tmp->nextFile;
+	}
 }
