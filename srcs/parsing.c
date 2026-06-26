@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/12 15:29:57 by rihoy             #+#    #+#             */
-/*   Updated: 2026/06/25 17:16:00 by rihoy            ###   ########.fr       */
+/*   Updated: 2026/06/26 15:43:25 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,25 +38,26 @@ void	setAttr(const char *str, t_info_ls *infoLs) {
 }
 
 void	*parsingInfoLs(const int argc, const char **argv, t_info_ls *infoLs) {
+	t_info_inode	model = {0};
+
 	for (int i = 1; i < argc; i++) {
 		if (argv[i][0] == '-') {
 			setAttr(argv[i], infoLs);
 		} else {
-			char	*tmp_name_file;
-
-			tmp_name_file = strdupself(argv[i]);
-			if (!tmp_name_file) {
+			infoLs->attrLs |= ATTR_STARTDIR;
+			model.nameFile = strdupself(argv[i]);
+			if (!model.nameFile) {
 				return (NULL);
 			}
-			addBackList(&infoLs->filesList, tmp_name_file);
-			// free(tmp_name_file);
+			addCmpList(&infoLs->filesList, model, &strcmpLs);
 		}
 	}
 	return (infoLs->filesList);
 }
 
-void	*addCmpList(t_info_inode **list, char *name_file, t_func_cmplist cmpfunc) {
+void	*addCmpList(t_info_inode **list, t_info_inode model, t_func_cmplist cmpfunc) {
 	t_info_inode	*new_node;
+	t_info_inode	**tracer = list;
 	
 	if (!list)
 		return (NULL);
@@ -65,19 +66,21 @@ void	*addCmpList(t_info_inode **list, char *name_file, t_func_cmplist cmpfunc) {
 	if (!new_node)
 		return (NULL);
 
-	new_node->nameFile = name_file;
+	new_node->nameFile = model.nameFile;
+	new_node->attrFile = 0;
+	new_node->depth	= 0;
+	new_node->fullpath = NULL;
 	new_node->nextFile = NULL;
-	t_info_inode	*tmp = *list;
-	if (!tmp) {
-		tmp = new_node;
-		return (new_node);
-	}
-	while (tmp->nextFile) {
-		if (cmpfunc(tmp->nameFile, name_file) > 0) {
-			
+
+	while (*tracer) {
+		if (cmpfunc((*tracer)->nameFile, model.nameFile) > 0) {
+			new_node->nextFile = (*tracer);
+			*tracer = new_node;
+			return (new_node);
 		}
-		tmp = tmp->nextFile;
+		tracer = &(*tracer)->nextFile;
 	}
+	(*tracer) = new_node;
 	return (new_node);
 }
 
@@ -85,22 +88,18 @@ void	*addBackList(t_info_inode **list, char *name_file) {
 	t_info_inode	*new_node;
 
 	if (!list)
-	return (NULL);
+		return (NULL);
 
 	new_node = (t_info_inode *)malloc(sizeof(t_info_inode));
 	if (!new_node)
 		return (NULL);
 
-	t_info_inode	*tmp = *list;
+	t_info_inode	**tracer = list;
 	new_node->nameFile = name_file;
 	new_node->nextFile = NULL;
-	if (!tmp) {
-		(*list) = new_node;
-		return (new_node);
-	}
-	while (tmp->nextFile)
-		tmp = tmp->nextFile;
-	tmp->nextFile = new_node;
+	while (*tracer)
+		tracer = &(*tracer)->nextFile;
+	*tracer = new_node;
 	return (new_node);
 }
 
@@ -129,6 +128,18 @@ void	removeElement(t_info_inode **list, void *remove) {
 	free(tmp);
 }
 
+int		strcmpLs(void *str1, void *str2) {
+	char *addr_str1 = (char *)str1;
+	char *addr_str2 = (char *)str2;
+
+	int	i = 0;
+	while (addr_str1[i] && addr_str2[i] && addr_str1[i] == addr_str2[i]) {
+		i++;
+	}
+
+	return ((unsigned char)addr_str1[i] - (unsigned char)addr_str2[i]);
+}
+
 void	seeInfo(t_info_ls *infoLs) {
 	fprintfSelf(2, "Attribue Long format: %s\n",
 		(infoLs->attrLs & ATTR_LONGFORMAT ? "vraie" : "faux"));
@@ -140,6 +151,8 @@ void	seeInfo(t_info_ls *infoLs) {
 		(infoLs->attrLs & ATTR_SORTBYTIME ? "vraie" : "faux"));
 	fprintfSelf(2, "Attribue All: %s\n",
 		(infoLs->attrLs & ATTR_ALL ? "vraie" : "faux"));
+	fprintfSelf(2, "Attribue in Directory: %s\n",
+		(infoLs->attrLs & ATTR_STARTDIR ? "vraie" : "faux"));
 	
 	t_info_inode	*tmp;
 	tmp = infoLs->filesList;
@@ -149,4 +162,29 @@ void	seeInfo(t_info_ls *infoLs) {
 		fprintfSelf(2, "file : %s\n", tmp->nameFile);
 		tmp = tmp->nextFile;
 	}
+}
+
+#include <stdlib.h>
+
+void	freeInfoInode(t_info_inode **list) {
+	t_info_inode	*current;
+	t_info_inode	*next_node;
+
+	if (!list || !*list)
+		return ;
+	
+	current = *list;
+	while (current != NULL) {
+		next_node = current->nextFile;
+		
+		if (current->nameFile)
+			free(current->nameFile);
+		if (current->fullpath)
+			free(current->fullpath);
+
+		free(current);
+		current = next_node;
+	}
+
+	*list = NULL;
 }

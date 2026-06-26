@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/12 15:32:44 by rihoy             #+#    #+#             */
-/*   Updated: 2026/06/25 17:16:16 by rihoy            ###   ########.fr       */
+/*   Updated: 2026/06/26 15:41:49 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,20 +47,25 @@ enum fileAttribute {
 	ATTR_SYSTEM		= 4,
 	ATTR_EXECUTABLE	= 8,
 	ATTR_DIRECTORY	= 16,
+	ATTR_STARTDIR	= 32,
 };
 
 typedef struct	s_info_inode {
 	char			*nameFile;
+	char			*fullpath;
 	int				attrFile;
-	t_info_inode	*inDir;
+	int				depth;
 	t_info_inode	*nextFile;
 }				t_info_inode;
 
 typedef	int	(*t_func_cmplist)(void *, void *);
 
+void	freeInfoInode(t_info_inode **list);
 void	*addBackList(t_info_inode **list, char *name_file);
 int		fprintfSelf(const int fd, const char *str, ...);
 void	*parsingInfoLs(const int argc, const char **argv, t_info_ls *infoLs);
+int		strcmpLs(void *str1, void *str2);
+void	*addCmpList(t_info_inode **list, t_info_inode model, t_func_cmplist cmpfunc);
 
 char	*strdupself(const char *src);
 void	seeInfo(t_info_ls *infoLs);
