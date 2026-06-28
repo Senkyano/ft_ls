@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/12 15:29:57 by rihoy             #+#    #+#             */
-/*   Updated: 2026/06/26 15:43:25 by rihoy            ###   ########.fr       */
+/*   Updated: 2026/06/28 22:56:46 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	setAttr(const char *str, t_info_ls *infoLs) {
 		
 		if (!flag) {
 			fprintfSelf(2, "ls: invalid option -- '%c'\n", *str);
-			// free(list);
+			freeInfoInode(&infoLs->filesList);
 			exit(2);
 		}
 
@@ -43,14 +43,19 @@ void	*parsingInfoLs(const int argc, const char **argv, t_info_ls *infoLs) {
 	for (int i = 1; i < argc; i++) {
 		if (argv[i][0] == '-') {
 			setAttr(argv[i], infoLs);
-		} else {
-			infoLs->attrLs |= ATTR_STARTDIR;
-			model.nameFile = strdupself(argv[i]);
-			if (!model.nameFile) {
-				return (NULL);
-			}
-			addCmpList(&infoLs->filesList, model, &strcmpLs);
 		}
+	}
+
+	for (int i = 1; i < argc; i++) {
+		infoLs->attrLs |= ATTR_STARTDIR;
+		model.nameFile = strdupself(argv[i]);
+		model.fullpath = strdupself(argv[i]);
+		model.depth = 0;
+
+		if (!model.nameFile)
+			return (NULL);
+
+		addCmpList(&infoLs->filesList, model, &attrcmpLs);
 	}
 	return (infoLs->filesList);
 }
@@ -62,82 +67,34 @@ void	*addCmpList(t_info_inode **list, t_info_inode model, t_func_cmplist cmpfunc
 	if (!list)
 		return (NULL);
 
+	if (!model.nameFile)
+		return (*list);
+
 	new_node = (t_info_inode *)malloc(sizeof(t_info_inode));
 	if (!new_node)
 		return (NULL);
 
 	new_node->nameFile = model.nameFile;
+	new_node->depth = model.depth;
 	new_node->attrFile = 0;
-	new_node->depth	= 0;
-	new_node->fullpath = NULL;
+	new_node->fullpath = model.fullpath;
 	new_node->nextFile = NULL;
 
-	while (*tracer) {
-		if (cmpfunc((*tracer)->nameFile, model.nameFile) > 0) {
-			new_node->nextFile = (*tracer);
-			*tracer = new_node;
-			return (new_node);
-		}
+	while (*tracer &&
+			(*tracer)->depth == model.depth &&
+			cmpfunc((*tracer)->nameFile, model.nameFile) <= 0) {
 		tracer = &(*tracer)->nextFile;
 	}
+
+	new_node->nextFile = *tracer;
 	(*tracer) = new_node;
+
 	return (new_node);
 }
 
-void	*addBackList(t_info_inode **list, char *name_file) {
-	t_info_inode	*new_node;
-
-	if (!list)
-		return (NULL);
-
-	new_node = (t_info_inode *)malloc(sizeof(t_info_inode));
-	if (!new_node)
-		return (NULL);
-
-	t_info_inode	**tracer = list;
-	new_node->nameFile = name_file;
-	new_node->nextFile = NULL;
-	while (*tracer)
-		tracer = &(*tracer)->nextFile;
-	*tracer = new_node;
-	return (new_node);
-}
-
-void	removeElement(t_info_inode **list, void *remove) {
-	t_info_inode	*tmp;
-	t_info_inode	*prev;
-
-	if (!list || !remove || !(*list))
-		return ;
-
-	tmp = *list;
-	prev = NULL;
-	while (tmp != NULL && tmp != (t_info_inode *)remove) {
-		prev = tmp;
-		tmp = tmp->nextFile;
-	}
-
-	if (!tmp)
-		return ;
-
-	if (!prev)
-		(*list) = tmp->nextFile;
-	else
-		prev->nextFile = tmp->nextFile;
-
-	free(tmp);
-}
-
-int		strcmpLs(void *str1, void *str2) {
-	char *addr_str1 = (char *)str1;
-	char *addr_str2 = (char *)str2;
-
-	int	i = 0;
-	while (addr_str1[i] && addr_str2[i] && addr_str1[i] == addr_str2[i]) {
-		i++;
-	}
-
-	return ((unsigned char)addr_str1[i] - (unsigned char)addr_str2[i]);
+// reshape
+int		attrcmpLs(void *str1, void *str2, const int attrInfoLs) {
+	return (0);
 }
 
 void	seeInfo(t_info_ls *infoLs) {
@@ -159,7 +116,8 @@ void	seeInfo(t_info_ls *infoLs) {
 	if (!tmp)
 		fprintfSelf(2, "Null \n");
 	while (tmp) {
-		fprintfSelf(2, "file : %s\n", tmp->nameFile);
+		fprintfSelf(2, "file : %s | fullpath : %s -> ", tmp->nameFile, tmp->fullpath);
+		printf("depth : %d\n", tmp->depth);
 		tmp = tmp->nextFile;
 	}
 }

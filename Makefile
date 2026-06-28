@@ -41,7 +41,7 @@ RESET = \033[0m
 #--------------------------------------#
 #		File
 #-----------------------#
-FILE_C =	main.c parsing.c fprintself.c strdupself.c
+FILE_C =	main.c parsing.c fprintself.c strdupself.c exploringfile.c printinfols.c
 
 SRC = $(addprefix $(SRCS)/, $(FILE_C))
 OBJ = $(patsubst %.c, $(OBJS)/%.o, $(FILE_C))
