@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/28 13:31:50 by rihoy             #+#    #+#             */
-/*   Updated: 2026/06/28 21:39:22 by rihoy            ###   ########.fr       */
+/*   Updated: 2026/06/29 18:58:11 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	exploringInfo(t_info_ls *infoLs) {
 				model.nameFile = NULL;
 			}
 			model.depth = 0;
-			addCmpList(&infoLs->filesList, model, &strcmpLs);
+			addCmpList(&infoLs->filesList, model, &attrcmpLs, infoLs->attrLs);
 		}
 	
 		closedir(dossier);
@@ -64,7 +64,7 @@ int	exploringInfo(t_info_ls *infoLs) {
 						model.nameFile = NULL;
 					}
 					model.depth = directory->depth + 1;
-					addCmpList(&directory->nextFile, model, &strcmpLs);
+					addCmpList(&directory->nextFile, model, &attrcmpLs, infoLs->attrLs);
 				}
 				closedir(dossier);
 			}

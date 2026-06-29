@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/12 15:29:57 by rihoy             #+#    #+#             */
-/*   Updated: 2026/06/28 22:56:46 by rihoy            ###   ########.fr       */
+/*   Updated: 2026/06/29 18:57:23 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,12 +55,12 @@ void	*parsingInfoLs(const int argc, const char **argv, t_info_ls *infoLs) {
 		if (!model.nameFile)
 			return (NULL);
 
-		addCmpList(&infoLs->filesList, model, &attrcmpLs);
+		addCmpList(&infoLs->filesList, model, &attrcmpLs, infoLs->attrLs);
 	}
 	return (infoLs->filesList);
 }
 
-void	*addCmpList(t_info_inode **list, t_info_inode model, t_func_cmplist cmpfunc) {
+void	*addCmpList(t_info_inode **list, t_info_inode model, t_func_cmplist cmpfunc, const int attrLs) {
 	t_info_inode	*new_node;
 	t_info_inode	**tracer = list;
 	
@@ -82,7 +82,7 @@ void	*addCmpList(t_info_inode **list, t_info_inode model, t_func_cmplist cmpfunc
 
 	while (*tracer &&
 			(*tracer)->depth == model.depth &&
-			cmpfunc((*tracer)->nameFile, model.nameFile) <= 0) {
+			cmpfunc((*tracer), new_node, attrLs) <= 0) {
 		tracer = &(*tracer)->nextFile;
 	}
 
@@ -93,7 +93,15 @@ void	*addCmpList(t_info_inode **list, t_info_inode model, t_func_cmplist cmpfunc
 }
 
 // reshape
-int		attrcmpLs(void *str1, void *str2, const int attrInfoLs) {
+int		attrcmpLs(void *nodecheck, void *newnode, const int attrLs) {
+	t_info_inode	*nodechecking;
+	t_info_inode	*newnodecheck;
+
+	nodechecking = (t_info_inode *)nodecheck;
+	newnodecheck = (t_info_inode *)newnode;
+	(void)nodechecking;
+	(void)newnodecheck;
+	(void)attrLs;
 	return (0);
 }
 

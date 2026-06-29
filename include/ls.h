@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/12 15:32:44 by rihoy             #+#    #+#             */
-/*   Updated: 2026/06/28 22:55:53 by rihoy            ###   ########.fr       */
+/*   Updated: 2026/06/29 18:52:26 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,17 +54,18 @@ typedef struct	s_info_inode {
 	char			*nameFile;
 	char			*fullpath;
 	int				attrFile;
+	int				time;
 	int				depth;
 	t_info_inode	*nextFile;
 }				t_info_inode;
 
-typedef	int	(*t_func_cmplist)(void *, void *);
+typedef	int	(*t_func_cmplist)(void *, void *, const int);
 
 void	freeInfoInode(t_info_inode **list);
 int		fprintfSelf(const int fd, const char *str, ...);
 void	*parsingInfoLs(const int argc, const char **argv, t_info_ls *infoLs);
-int		attrcmpLs(void *str1, void *str2, const int attrInfoLs);
-void	*addCmpList(t_info_inode **list, t_info_inode model, t_func_cmplist cmpfunc);
+int		attrcmpLs(void *str1, void *str2, const int attrLs);
+void	*addCmpList(t_info_inode **list, t_info_inode model, t_func_cmplist cmpfunc, const int attrLs);
 int		exploringInfo(t_info_ls *infoLs);
 
 char	*strdupself(const char *src);
