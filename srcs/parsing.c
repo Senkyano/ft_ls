@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/12 15:29:57 by rihoy             #+#    #+#             */
-/*   Updated: 2026/06/29 18:57:23 by rihoy            ###   ########.fr       */
+/*   Updated: 2026/07/03 16:50:45 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,15 +47,30 @@ void	*parsingInfoLs(const int argc, const char **argv, t_info_ls *infoLs) {
 	}
 
 	for (int i = 1; i < argc; i++) {
-		infoLs->attrLs |= ATTR_STARTDIR;
-		model.nameFile = strdupself(argv[i]);
-		model.fullpath = strdupself(argv[i]);
-		model.depth = 0;
-
-		if (!model.nameFile)
-			return (NULL);
-
-		addCmpList(&infoLs->filesList, model, &attrcmpLs, infoLs->attrLs);
+		if (argv[i][0] != '-') {
+			infoLs->attrLs |= ATTR_STARTDIR;
+			model.nameFile = strdupself(argv[i]);
+			model.fullpath = strdupself(argv[i]);
+			model.depth = 0;
+	
+			if (!model.nameFile)
+				return (NULL);
+	
+			struct stat modelstat;
+	
+			if (stat(model.nameFile, &modelstat) == -1) {
+				printf("%d errno, %d EACCES, %d ENOENT\n",errno, EACCES,ENOENT);
+				if (errno & EACCES || errno & ENOENT) {
+					fprintfSelf(2, "ft_ls cannot access '%s': No such file or directory\n", model.nameFile);
+				}
+				free(model.nameFile); free (model.fullpath);
+			} else {
+				model.last_modification = modelstat.st_atime;
+				model.sizeFile = modelstat.st_size;
+				printf("%ld sizeFile\n\n%ld block\n", model.sizeFile, modelstat.st_blocks);
+				addCmpList(&infoLs->filesList, model, &attrcmpLs, infoLs->attrLs);
+			}	
+		}
 	}
 	return (infoLs->filesList);
 }
@@ -78,6 +93,7 @@ void	*addCmpList(t_info_inode **list, t_info_inode model, t_func_cmplist cmpfunc
 	new_node->depth = model.depth;
 	new_node->attrFile = 0;
 	new_node->fullpath = model.fullpath;
+	new_node->last_modification = model.last_modification;
 	new_node->nextFile = NULL;
 
 	while (*tracer &&

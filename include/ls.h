@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/12 15:32:44 by rihoy             #+#    #+#             */
-/*   Updated: 2026/06/29 18:52:26 by rihoy            ###   ########.fr       */
+/*   Updated: 2026/07/03 16:58:55 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,10 @@ typedef struct	s_info_inode t_info_inode;
 #define REVERSE		'r'
 #define SORTBYTIME	't'
 #define LONGFORMAT	'l'
+
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <errno.h>
 
 enum lsAttribute {
 	ATTR_ALL		= 1,
@@ -48,13 +52,17 @@ enum fileAttribute {
 	ATTR_SYSTEM		= 4,
 	ATTR_EXECUTABLE	= 8,
 	ATTR_DIRECTORY	= 16,
+	ATTR_SYMLINK	= 32,
 };
 
 typedef struct	s_info_inode {
 	char			*nameFile;
 	char			*fullpath;
 	int				attrFile;
-	int				time;
+	time_t			last_modification;
+	uid_t			userId;
+	gid_t			
+	off_t			sizeFile;
 	int				depth;
 	t_info_inode	*nextFile;
 }				t_info_inode;
