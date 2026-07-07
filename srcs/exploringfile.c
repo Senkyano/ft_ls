@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/28 13:31:50 by rihoy             #+#    #+#             */
-/*   Updated: 2026/06/29 18:58:11 by rihoy            ###   ########.fr       */
+/*   Updated: 2026/07/07 23:33:51 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@
 int	exploringInfo(t_info_ls *infoLs) {
 	DIR				*dossier;
 	struct dirent	*element;
-	t_info_inode	*directory;
-	t_info_inode	*nextfile;
+	// t_info_inode	*directory;
+	// t_info_inode	*nextfile;
 	t_info_inode	model = {0};
 
 	if (!(infoLs->attrLs & ATTR_STARTDIR)) {
@@ -45,33 +45,34 @@ int	exploringInfo(t_info_ls *infoLs) {
 		}
 	
 		closedir(dossier);
-	} else {
-		directory = infoLs->filesList;
-		while (directory) {
-			nextfile = directory->nextFile;
-			dossier = opendir(directory->nameFile);
-			if(dossier) {
-				directory->attrFile |= ATTR_DIRECTORY;
-				while ((element = readdir(dossier)) != NULL) {
-					model = *directory;
-					model.nameFile = strdupself(element->d_name);
-					if (!model.nameFile) {
-						fprintfSelf(2, "Error malloc\n");
-						return (1);
-					}
-					if (!(infoLs->attrLs & ATTR_ALL) && model.nameFile[0] == '.') {
-						free(model.nameFile);
-						model.nameFile = NULL;
-					}
-					model.depth = directory->depth + 1;
-					addCmpList(&directory->nextFile, model, &attrcmpLs, infoLs->attrLs);
-				}
-				closedir(dossier);
-			}
-			dossier = NULL;
-			directory = nextfile;
-		}
 	}
+	// else {
+	// 	directory = infoLs->filesList;
+	// 	while (directory) {
+	// 		nextfile = directory->nextFile;
+	// 		dossier = opendir(directory->nameFile);
+	// 		if(dossier) {
+	// 			directory->attrFile |= ATTR_DIRECTORY;
+	// 			while ((element = readdir(dossier)) != NULL) {
+	// 				model = *directory;
+	// 				model.nameFile = strdupself(element->d_name);
+	// 				if (!model.nameFile) {
+	// 					fprintfSelf(2, "Error malloc\n");
+	// 					return (1);
+	// 				}
+	// 				if (!(infoLs->attrLs & ATTR_ALL) && model.nameFile[0] == '.') {
+	// 					free(model.nameFile);
+	// 					model.nameFile = NULL;
+	// 				}
+	// 				model.depth = directory->depth + 1;
+	// 				addCmpList(&directory->nextFile, model, &attrcmpLs, infoLs->attrLs);
+	// 			}
+	// 			closedir(dossier);
+	// 		}
+	// 		dossier = NULL;
+	// 		directory = nextfile;
+	// 	}
+	// }
 
 	return (0);
 }

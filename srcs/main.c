@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/12 14:59:14 by rihoy             #+#    #+#             */
-/*   Updated: 2026/06/28 22:41:19 by rihoy            ###   ########.fr       */
+/*   Updated: 2026/07/07 23:59:57 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,9 @@ int main(const int argc, const char **argv) {
 	(void)argc; (void)argv; (void)infoLs;
 
 	parsingInfoLs(argc, argv, &infoLs);
+	exploringInfo(&infoLs);
 	seeInfo(&infoLs);
-	// printInfoLs(&infoLs);
+	printInfoLs(&infoLs);
 	freeInfoInode(&infoLs.filesList);
 	return (0);
 }

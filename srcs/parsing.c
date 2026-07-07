@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/12 15:29:57 by rihoy             #+#    #+#             */
-/*   Updated: 2026/07/05 11:03:17 by rihoy            ###   ########.fr       */
+/*   Updated: 2026/07/07 23:51:35 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ void	*addCmpList(t_info_inode **list, t_info_inode model, t_func_cmplist cmpfunc
 
 	while (*tracer &&
 			(*tracer)->depth == model.depth &&
-			cmpfunc((*tracer), new_node, attrLs) <= 0) {
+			cmpfunc((*tracer), new_node, attrLs) < 0) {
 		tracer = &(*tracer)->nextFile;
 	}
 
@@ -108,35 +108,55 @@ void	*addCmpList(t_info_inode **list, t_info_inode model, t_func_cmplist cmpfunc
 	return (new_node);
 }
 
+int		is_uppercase(unsigned char c) {
+	if (c >= 'A' && c <= 'Z')
+		return (1);
+	return (0);
+}
+
 // reshape
 int		attrcmpLs(void *nodecheck, void *newnode, const int attrLs) {
 	t_info_inode	*nodechecking;
 	t_info_inode	*newnodecheck;
+	size_t			i = 0;
+	int				return_value = 0;
 
 	nodechecking = (t_info_inode *)nodecheck;
 	newnodecheck = (t_info_inode *)newnode;
-	(void)nodechecking;
-	(void)newnodecheck;
-	(void)attrLs;
-	if (attrLs & ATTR_REVERSE) {
-		printf("Reverse\n");
+
+	if (attrLs & ATTR_SORTBYTIME) {
+		if (newnodecheck->last_modification != nodechecking->last_modification) {
+			return_value = newnodecheck->last_modification - nodechecking->last_modification;
+
+			return (attrLs & ATTR_REVERSE ? -return_value : return_value);
+		}
 	}
-	return (0);
+
+	while (nodechecking->nameFile && newnodecheck->nameFile
+			&& nodechecking->nameFile[i] && newnodecheck->nameFile[i]) {
+		return_value = (unsigned char)nodechecking->nameFile[i]
+						- (unsigned char)newnodecheck->nameFile[i];
+		if (return_value != 0)
+			break ;
+		i++;
+	}
+
+	return (attrLs & ATTR_REVERSE ? -return_value : return_value);
 }
 
 void	seeInfo(t_info_ls *infoLs) {
-	fprintfSelf(2, "Attribue Long format: %s\n",
-		(infoLs->attrLs & ATTR_LONGFORMAT ? "vraie" : "faux"));
-	fprintfSelf(2, "Attribue Recursive: %s\n",
-		(infoLs->attrLs & ATTR_RECURSIVE ? "vraie" : "faux"));
-	fprintfSelf(2, "Attribue Reverse: %s\n",
-		(infoLs->attrLs & ATTR_REVERSE ? "vraie" : "faux"));
-	fprintfSelf(2, "Attribue Sort by Time: %s\n",
-		(infoLs->attrLs & ATTR_SORTBYTIME ? "vraie" : "faux"));
-	fprintfSelf(2, "Attribue All: %s\n",
-		(infoLs->attrLs & ATTR_ALL ? "vraie" : "faux"));
-	fprintfSelf(2, "Attribue in Directory: %s\n",
-		(infoLs->attrLs & ATTR_STARTDIR ? "vraie" : "faux"));
+	// fprintfSelf(2, "Attribue Long format: %s\n",
+	// 	(infoLs->attrLs & ATTR_LONGFORMAT ? "vraie" : "faux"));
+	// fprintfSelf(2, "Attribue Recursive: %s\n",
+	// 	(infoLs->attrLs & ATTR_RECURSIVE ? "vraie" : "faux"));
+	// fprintfSelf(2, "Attribue Reverse: %s\n",
+	// 	(infoLs->attrLs & ATTR_REVERSE ? "vraie" : "faux"));
+	// fprintfSelf(2, "Attribue Sort by Time: %s\n",
+	// 	(infoLs->attrLs & ATTR_SORTBYTIME ? "vraie" : "faux"));
+	// fprintfSelf(2, "Attribue All: %s\n",
+	// 	(infoLs->attrLs & ATTR_ALL ? "vraie" : "faux"));
+	// fprintfSelf(2, "Attribue in Directory: %s\n",
+	// 	(infoLs->attrLs & ATTR_STARTDIR ? "vraie" : "faux"));
 	
 	t_info_inode	*tmp;
 	tmp = infoLs->filesList;

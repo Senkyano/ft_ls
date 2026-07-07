@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/28 16:36:57 by rihoy             #+#    #+#             */
-/*   Updated: 2026/06/28 21:48:47 by rihoy            ###   ########.fr       */
+/*   Updated: 2026/07/08 00:03:08 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,6 @@ void	printInfoLs(t_info_ls *infoLs) {
 	int				act_depth = 0;
 
 	tmp = infoLs->filesList;
-	if (infoLs->attrLs & ATTR_RECURSIVE)
-		fprintfSelf(1, ".:\n");
 	while (tmp) {
 		if ((tmp->attrFile & ATTR_DIRECTORY) && act_depth == tmp->depth) {
 			fprintfSelf(1 ,"%s:\n", tmp->nameFile);
@@ -28,7 +26,7 @@ void	printInfoLs(t_info_ls *infoLs) {
 			fprintfSelf(1 ,"%s", tmp->nameFile);
 		}
 		if (tmp->nextFile)
-			fprintfSelf(1, " ");
+			fprintfSelf(1, "   ");
 		tmp = tmp->nextFile;
 		if (tmp && act_depth > tmp->depth) {
 			fprintfSelf(1, "\n\n");

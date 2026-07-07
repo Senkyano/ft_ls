@@ -50,7 +50,6 @@ OBJ = $(patsubst %.c, $(OBJS)/%.o, $(FILE_C))
 
 # SRC_INIT = $(addprefix $(SRCS)/$(INIT)/, $(INIT_C))
 # OBJ_INIT = $(patsubst %.c, $(OBJS)/%.o, $(INIT_C))
-
 #--------------------------------------#
 #		Rules
 #-----------------------#
