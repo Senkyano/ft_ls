@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/12 15:32:44 by rihoy             #+#    #+#             */
-/*   Updated: 2026/07/03 16:58:55 by rihoy            ###   ########.fr       */
+/*   Updated: 2026/07/05 10:53:33 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,8 @@ typedef struct	s_info_inode {
 	int				attrFile;
 	time_t			last_modification;
 	uid_t			userId;
-	gid_t			
 	off_t			sizeFile;
+	mode_t			st_mode;
 	int				depth;
 	t_info_inode	*nextFile;
 }				t_info_inode;

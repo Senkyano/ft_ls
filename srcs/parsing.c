@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/12 15:29:57 by rihoy             #+#    #+#             */
-/*   Updated: 2026/07/03 16:50:45 by rihoy            ###   ########.fr       */
+/*   Updated: 2026/07/05 11:03:17 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	*parsingInfoLs(const int argc, const char **argv, t_info_ls *infoLs) {
 			} else {
 				model.last_modification = modelstat.st_atime;
 				model.sizeFile = modelstat.st_size;
-				printf("%ld sizeFile\n\n%ld block\n", model.sizeFile, modelstat.st_blocks);
+				model.st_mode = modelstat.st_mode;
 				addCmpList(&infoLs->filesList, model, &attrcmpLs, infoLs->attrLs);
 			}	
 		}
@@ -118,6 +118,9 @@ int		attrcmpLs(void *nodecheck, void *newnode, const int attrLs) {
 	(void)nodechecking;
 	(void)newnodecheck;
 	(void)attrLs;
+	if (attrLs & ATTR_REVERSE) {
+		printf("Reverse\n");
+	}
 	return (0);
 }
 
