@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/12 15:29:57 by rihoy             #+#    #+#             */
-/*   Updated: 2026/07/07 23:51:35 by rihoy            ###   ########.fr       */
+/*   Updated: 2026/07/08 16:00:16 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,14 +58,14 @@ void	*parsingInfoLs(const int argc, const char **argv, t_info_ls *infoLs) {
 	
 			struct stat modelstat;
 	
-			if (stat(model.nameFile, &modelstat) == -1) {
+			if (lstat(model.nameFile, &modelstat) == -1) {
 				printf("%d errno, %d EACCES, %d ENOENT\n",errno, EACCES,ENOENT);
 				if (errno & EACCES || errno & ENOENT) {
 					fprintfSelf(2, "ft_ls cannot access '%s': No such file or directory\n", model.nameFile);
 				}
 				free(model.nameFile); free (model.fullpath);
 			} else {
-				model.last_modification = modelstat.st_atime;
+				model.last_modification = modelstat.st_mtime;
 				model.sizeFile = modelstat.st_size;
 				model.st_mode = modelstat.st_mode;
 				addCmpList(&infoLs->filesList, model, &attrcmpLs, infoLs->attrLs);
@@ -115,6 +115,7 @@ int		is_uppercase(unsigned char c) {
 }
 
 // reshape
+// on ne peut pas faire identique aux meme car il faut acceder aussi a la table ascii local pour bien les triés
 int		attrcmpLs(void *nodecheck, void *newnode, const int attrLs) {
 	t_info_inode	*nodechecking;
 	t_info_inode	*newnodecheck;
@@ -164,7 +165,7 @@ void	seeInfo(t_info_ls *infoLs) {
 		fprintfSelf(2, "Null \n");
 	while (tmp) {
 		fprintfSelf(2, "file : %s | fullpath : %s -> ", tmp->nameFile, tmp->fullpath);
-		printf("depth : %d\n", tmp->depth);
+		printf(" | depth : %d  |  time -> %ld\n", tmp->depth, tmp->last_modification);
 		tmp = tmp->nextFile;
 	}
 }
