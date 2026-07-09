@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/12 15:32:44 by rihoy             #+#    #+#             */
-/*   Updated: 2026/07/08 15:43:07 by rihoy            ###   ########.fr       */
+/*   Updated: 2026/07/09 23:27:13 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,4 +79,11 @@ int		exploringInfo(t_info_ls *infoLs);
 char	*strdupself(const char *src);
 void	seeInfo(t_info_ls *infoLs);
 void	printInfoLs(t_info_ls *infoLs);
+
+#include <stdbool.h>
+
+size_t	strlenSelf(char *str);
+bool	containSpecial(char *str);
+bool	isspecialchar(char c);
+
 #endif

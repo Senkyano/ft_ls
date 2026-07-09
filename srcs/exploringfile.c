@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/28 13:31:50 by rihoy             #+#    #+#             */
-/*   Updated: 2026/07/08 15:43:14 by rihoy            ###   ########.fr       */
+/*   Updated: 2026/07/09 15:59:13 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,12 +33,13 @@ int	exploringInfo(t_info_ls *infoLs) {
 	
 		while ((element = readdir(dossier)) != NULL) {
 			model.nameFile = strdupself(element->d_name);
-			model.fullpath = strdupself(element->d_name);
-
+			
 			if (!model.nameFile) {
 				fprintfSelf(2, "Error malloc\n");
+				closedir(dossier);
 				return (1);
-			}	
+			}
+
 			if (!(infoLs->attrLs & ATTR_ALL) && model.nameFile[0] == '.') {
 				free(model.nameFile);
 				model.nameFile = NULL;
@@ -51,16 +52,30 @@ int	exploringInfo(t_info_ls *infoLs) {
 				if (errno & EACCES || errno & ENOENT) {
 					fprintfSelf(2, "ft_ls cannot access '%s': No such file or directory\n", model.nameFile);
 				}
-				free(model.nameFile); free (model.fullpath);
+				free(model.nameFile);
+				model.nameFile = NULL;
 			} else {
+				model.fullpath = strdupself(element->d_name);
+
+				if (!model.fullpath) {
+					free(model.nameFile);
+					closedir(dossier);
+					return (1);
+				}
+
 				model.depth = 0;
 				model.last_modification = modelstat.st_mtime;
 				model.sizeFile = modelstat.st_size;
 				model.st_mode = modelstat.st_mode;
-				addCmpList(&infoLs->filesList, model, &attrcmpLs, infoLs->attrLs);
+				if (!addCmpList(&infoLs->filesList, model, &attrcmpLs, infoLs->attrLs)) {
+					if (model.nameFile)
+						free(model.nameFile);
+					if (model.fullpath)
+						free(model.fullpath);
+				}
 			}
 		}
-	
+
 		closedir(dossier);
 	}
 	// else {

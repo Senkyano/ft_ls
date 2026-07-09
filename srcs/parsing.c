@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/12 15:29:57 by rihoy             #+#    #+#             */
-/*   Updated: 2026/07/08 16:00:16 by rihoy            ###   ########.fr       */
+/*   Updated: 2026/07/09 16:05:58 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,12 +50,16 @@ void	*parsingInfoLs(const int argc, const char **argv, t_info_ls *infoLs) {
 		if (argv[i][0] != '-') {
 			infoLs->attrLs |= ATTR_STARTDIR;
 			model.nameFile = strdupself(argv[i]);
-			model.fullpath = strdupself(argv[i]);
 			model.depth = 0;
-	
+			
 			if (!model.nameFile)
 				return (NULL);
-	
+
+			model.fullpath = strdupself(argv[i]);
+
+			if (!model.fullpath)
+				return (free(model.nameFile), NULL);
+			
 			struct stat modelstat;
 	
 			if (lstat(model.nameFile, &modelstat) == -1) {
@@ -68,7 +72,12 @@ void	*parsingInfoLs(const int argc, const char **argv, t_info_ls *infoLs) {
 				model.last_modification = modelstat.st_mtime;
 				model.sizeFile = modelstat.st_size;
 				model.st_mode = modelstat.st_mode;
-				addCmpList(&infoLs->filesList, model, &attrcmpLs, infoLs->attrLs);
+				if (addCmpList(&infoLs->filesList, model, &attrcmpLs, infoLs->attrLs)) {
+					if (model.nameFile)
+						free(model.nameFile);
+					if (model.fullpath)
+						free(model.fullpath);
+				}
 			}	
 		}
 	}
@@ -82,8 +91,8 @@ void	*addCmpList(t_info_inode **list, t_info_inode model, t_func_cmplist cmpfunc
 	if (!list)
 		return (NULL);
 
-	if (!model.nameFile)
-		return (*list);
+	if (!model.nameFile || !model.fullpath)
+		return (NULL);
 
 	new_node = (t_info_inode *)malloc(sizeof(t_info_inode));
 	if (!new_node)
@@ -146,18 +155,18 @@ int		attrcmpLs(void *nodecheck, void *newnode, const int attrLs) {
 }
 
 void	seeInfo(t_info_ls *infoLs) {
-	// fprintfSelf(2, "Attribue Long format: %s\n",
-	// 	(infoLs->attrLs & ATTR_LONGFORMAT ? "vraie" : "faux"));
-	// fprintfSelf(2, "Attribue Recursive: %s\n",
-	// 	(infoLs->attrLs & ATTR_RECURSIVE ? "vraie" : "faux"));
-	// fprintfSelf(2, "Attribue Reverse: %s\n",
-	// 	(infoLs->attrLs & ATTR_REVERSE ? "vraie" : "faux"));
-	// fprintfSelf(2, "Attribue Sort by Time: %s\n",
-	// 	(infoLs->attrLs & ATTR_SORTBYTIME ? "vraie" : "faux"));
-	// fprintfSelf(2, "Attribue All: %s\n",
-	// 	(infoLs->attrLs & ATTR_ALL ? "vraie" : "faux"));
-	// fprintfSelf(2, "Attribue in Directory: %s\n",
-	// 	(infoLs->attrLs & ATTR_STARTDIR ? "vraie" : "faux"));
+	fprintfSelf(2, "Attribue Long format: %s\n",
+		(infoLs->attrLs & ATTR_LONGFORMAT ? "vraie" : "faux"));
+	fprintfSelf(2, "Attribue Recursive: %s\n",
+		(infoLs->attrLs & ATTR_RECURSIVE ? "vraie" : "faux"));
+	fprintfSelf(2, "Attribue Reverse: %s\n",
+		(infoLs->attrLs & ATTR_REVERSE ? "vraie" : "faux"));
+	fprintfSelf(2, "Attribue Sort by Time: %s\n",
+		(infoLs->attrLs & ATTR_SORTBYTIME ? "vraie" : "faux"));
+	fprintfSelf(2, "Attribue All hidden file: %s\n",
+		(infoLs->attrLs & ATTR_ALL ? "vraie" : "faux"));
+	fprintfSelf(2, "Attribue in Directory: %s\n",
+		(infoLs->attrLs & ATTR_STARTDIR ? "vraie" : "faux"));
 	
 	t_info_inode	*tmp;
 	tmp = infoLs->filesList;
