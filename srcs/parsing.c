@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/12 15:29:57 by rihoy             #+#    #+#             */
-/*   Updated: 2026/07/09 16:05:58 by rihoy            ###   ########.fr       */
+/*   Updated: 2026/07/10 16:44:12 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ void	*addCmpList(t_info_inode **list, t_info_inode model, t_func_cmplist cmpfunc
 
 	while (*tracer &&
 			(*tracer)->depth == model.depth &&
-			cmpfunc((*tracer), new_node, attrLs) < 0) {
+			cmpfunc((*tracer), new_node, attrLs) <= 0) {
 		tracer = &(*tracer)->nextFile;
 	}
 

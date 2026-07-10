@@ -6,13 +6,17 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/28 16:36:57 by rihoy             #+#    #+#             */
-/*   Updated: 2026/07/09 23:29:35 by rihoy            ###   ########.fr       */
+/*   Updated: 2026/07/10 17:14:16 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ls.h"
 #include <time.h>
 #include <stdio.h>
+
+void	printaccessfile(mode_t st_mode) {
+	if ()
+}
 
 void	printInfoLs(t_info_ls *infoLs) {
 	t_info_inode	*tmp;
