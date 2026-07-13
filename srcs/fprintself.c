@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/13 23:39:35 by rihoy             #+#    #+#             */
-/*   Updated: 2026/06/16 14:27:11 by rihoy            ###   ########.fr       */
+/*   Updated: 2026/07/13 14:35:22 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 
 int		charprint(const int fd, va_list args);
 int		strprint(const int fd, va_list args);
+int		numberIntprint(const int fd, va_list args);
 void	printOption(const int fd, const char option, int *lenght, va_list args);
 
 int	fprintfSelf(const int fd, const char *str, ...) {
@@ -55,6 +56,7 @@ void	printOption(const int fd,
 	static const t_func_print table[256] = {
 		['c'] = charprint,
 		['s'] = strprint,
+		['d'] = numberIntprint,
 	};
 		
 	if (table[(unsigned char)option] != NULL) {
@@ -69,6 +71,50 @@ void	printOption(const int fd,
 		if (write(fd, &option, 1) != -1)
 			*lenght += 1; 
 	}
+}
+
+#include <limits.h>
+
+size_t	lenNumber(int x, int lenghtBase) {
+	size_t	lenstr = 0;
+
+	if (x < 0) {
+		if (x == INT_MIN)
+			x += 1;
+		x = -x;
+		lenstr++;
+	}
+	
+	while (x) {
+		x /= lenghtBase;
+		lenstr++;
+	}
+
+	return (lenstr);
+}
+
+int	numberIntprint(const int fd, va_list args) {
+	int		x = va_arg(args, int);
+	size_t	stringlen = lenNumber(x, 10);
+	char	numberstr[12] = {0};
+
+	if (stringlen > 11)
+		return (0);
+	if (x < 0) {
+		numberstr[0] = '-';
+		if (x == INT_MIN)
+			return (fprintfSelf(fd, "%s", "-2147483648"));
+		x = -x;
+	}
+
+	stringlen--;
+	while (x) {
+		numberstr[stringlen] = ('0' + (x % 10));
+		stringlen--;
+		x /= 10;
+	}
+
+	return (fprintfSelf(fd, "%s", numberstr));
 }
 
 int strprint(const int fd, va_list args) {

@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/12 15:29:57 by rihoy             #+#    #+#             */
-/*   Updated: 2026/07/10 16:44:12 by rihoy            ###   ########.fr       */
+/*   Updated: 2026/07/13 13:54:03 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	*parsingInfoLs(const int argc, const char **argv, t_info_ls *infoLs) {
 	}
 
 	for (int i = 1; i < argc; i++) {
-		if (argv[i][0] != '-') {
+		if ((argv[i][0] == '-' && strlenSelf((char*)argv[i]) == 1	) || argv[i][0] != '-') {
 			infoLs->attrLs |= ATTR_STARTDIR;
 			model.nameFile = strdupself(argv[i]);
 			model.depth = 0;
@@ -61,18 +61,19 @@ void	*parsingInfoLs(const int argc, const char **argv, t_info_ls *infoLs) {
 				return (free(model.nameFile), NULL);
 			
 			struct stat modelstat;
-	
+
 			if (lstat(model.nameFile, &modelstat) == -1) {
-				printf("%d errno, %d EACCES, %d ENOENT\n",errno, EACCES,ENOENT);
+				// printf("%d errno, %d EACCES, %d ENOENT\n",errno, EACCES,ENOENT);
 				if (errno & EACCES || errno & ENOENT) {
 					fprintfSelf(2, "ft_ls cannot access '%s': No such file or directory\n", model.nameFile);
 				}
 				free(model.nameFile); free (model.fullpath);
 			} else {
 				model.last_modification = modelstat.st_mtime;
+				model.userId = modelstat.st_uid;
 				model.sizeFile = modelstat.st_size;
 				model.st_mode = modelstat.st_mode;
-				if (addCmpList(&infoLs->filesList, model, &attrcmpLs, infoLs->attrLs)) {
+				if (!addCmpList(&infoLs->filesList, model, &attrcmpLs, infoLs->attrLs)) {
 					if (model.nameFile)
 						free(model.nameFile);
 					if (model.fullpath)
@@ -99,10 +100,13 @@ void	*addCmpList(t_info_inode **list, t_info_inode model, t_func_cmplist cmpfunc
 		return (NULL);
 
 	new_node->nameFile = model.nameFile;
-	new_node->depth = model.depth;
-	new_node->attrFile = 0;
 	new_node->fullpath = model.fullpath;
+	new_node->attrFile = 0;
 	new_node->last_modification = model.last_modification;
+	new_node->userId = model.userId;
+	new_node->sizeFile = model.sizeFile;
+	new_node->st_mode = model.st_mode;
+	new_node->depth = model.depth;
 	new_node->nextFile = NULL;
 
 	while (*tracer &&
