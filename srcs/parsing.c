@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/12 15:29:57 by rihoy             #+#    #+#             */
-/*   Updated: 2026/07/13 13:54:03 by rihoy            ###   ########.fr       */
+/*   Updated: 2026/07/22 16:45:20 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,9 @@ void	*parsingInfoLs(const int argc, const char **argv, t_info_ls *infoLs) {
 				free(model.nameFile); free (model.fullpath);
 			} else {
 				model.last_modification = modelstat.st_mtime;
+				model.nblink = modelstat.st_nlink;
 				model.userId = modelstat.st_uid;
+				model.grId = modelstat.st_gid;
 				model.sizeFile = modelstat.st_size;
 				model.st_mode = modelstat.st_mode;
 				if (!addCmpList(&infoLs->filesList, model, &attrcmpLs, infoLs->attrLs)) {
@@ -102,8 +104,10 @@ void	*addCmpList(t_info_inode **list, t_info_inode model, t_func_cmplist cmpfunc
 	new_node->nameFile = model.nameFile;
 	new_node->fullpath = model.fullpath;
 	new_node->attrFile = 0;
+	new_node->nblink = model.nblink;
 	new_node->last_modification = model.last_modification;
 	new_node->userId = model.userId;
+	new_node->grId = model.grId;
 	new_node->sizeFile = model.sizeFile;
 	new_node->st_mode = model.st_mode;
 	new_node->depth = model.depth;

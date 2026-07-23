@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/12 15:32:44 by rihoy             #+#    #+#             */
-/*   Updated: 2026/07/09 23:27:13 by rihoy            ###   ########.fr       */
+/*   Updated: 2026/07/22 16:42:39 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ typedef struct	s_info_inode t_info_inode;
 
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <pwd.h>
 #include <errno.h>
 
 enum lsAttribute {
@@ -59,8 +60,10 @@ typedef struct	s_info_inode {
 	char			*nameFile;
 	char			*fullpath;
 	int				attrFile;
+	nlink_t			nblink;
 	time_t			last_modification;
 	uid_t			userId;
+	gid_t			grId;
 	off_t			sizeFile;
 	mode_t			st_mode;
 	int				depth;

@@ -6,13 +6,15 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/28 16:36:57 by rihoy             #+#    #+#             */
-/*   Updated: 2026/07/13 13:54:12 by rihoy            ###   ########.fr       */
+/*   Updated: 2026/07/22 16:55:16 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ls.h"
 #include <time.h>
 #include <stdio.h>
+#include "color.h"
+#include <grp.h>
 
 void	printaccessfile(mode_t st_mode) {
 	if (S_ISREG(st_mode)) {
@@ -46,7 +48,7 @@ void	printInfoLs(t_info_ls *infoLs) {
 			if (infoLs->attrLs & ATTR_LONGFORMAT) {
 				mode_t	modeFile = tmp->st_mode;
 				printaccessfile(modeFile);
-				fprintfSelf(1, "%c%c%c%c%c%c%c%c%c", (S_IRUSR & modeFile) ? 'r' : '-',
+				fprintfSelf(1, "%c%c%c%c%c%c%c%c%c ", (S_IRUSR & modeFile) ? 'r' : '-',
 													 (S_IWUSR & modeFile) ? 'w' : '-',
 													 (S_IXUSR & modeFile) ? 'x' : '-',
 													 (S_IRGRP & modeFile) ? 'r' : '-',
@@ -55,19 +57,30 @@ void	printInfoLs(t_info_ls *infoLs) {
 													 (S_IROTH & modeFile) ? 'r' : '-',
 													 (S_IWOTH & modeFile) ? 'w' : '-',
 													 (S_IXOTH & modeFile) ? 'x' : '-');
-				fprintfSelf(1, ". ");
+				fprintfSelf(1, "%d ", tmp->nblink);
 				char *temp = ctime(&tmp->last_modification);
 
 				int	i = strlenSelf(temp) - 1;
 
+				// Print time month date time
 				while (i && temp[i] != ':') {
 					temp[i] = 0;
 					i--;
 				}
 				temp[i] = 0;
-				printf("%ld ", tmp->sizeFile);
+				// proprietaire
+				struct passwd *uid;
+				uid = getpwuid(tmp->userId);
+				fprintfSelf(1, "%s ", uid->pw_name);
+				// gr
+				struct group *gid;
+				gid = getgrgid(tmp->grId);
+				fprintfSelf(1, "%s ", gid->gr_name);
+
+				fprintfSelf(1 ,"%d ", tmp->sizeFile);
 				fprintfSelf(1, "%s ", temp);
 			}
+			// a modifier pour correspondre \t\n etc
 			fprintfSelf(1, "%c%s%c",containSpecial(tmp->nameFile) ? '\'' : '\0', 
 									tmp->nameFile,
 									containSpecial(tmp->nameFile) ? '\'' : '\0');

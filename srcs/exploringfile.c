@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/28 13:31:50 by rihoy             #+#    #+#             */
-/*   Updated: 2026/07/13 10:58:41 by rihoy            ###   ########.fr       */
+/*   Updated: 2026/07/22 16:46:33 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,9 @@ int	exploringInfo(t_info_ls *infoLs) {
 
 				model.depth = 0;
 				model.last_modification = modelstat.st_mtime;
+				model.nblink = modelstat.st_nlink;
+				model.userId = modelstat.st_uid;
+				model.grId = modelstat.st_gid;
 				model.sizeFile = modelstat.st_size;
 				model.st_mode = modelstat.st_mode;
 				if (!addCmpList(&infoLs->filesList, model, &attrcmpLs, infoLs->attrLs)) {
