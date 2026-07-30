@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/12 15:32:44 by rihoy             #+#    #+#             */
-/*   Updated: 2026/07/22 16:42:39 by rihoy            ###   ########.fr       */
+/*   Updated: 2026/07/30 15:54:25 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,10 @@ enum fileAttribute {
 	ATTR_DIRECTORY	= 16,
 	ATTR_SYMLINK	= 32,
 };
+
+typedef struct	s_info_high {
+	int				size_char_sizeFile;
+}	t_info_high;
 
 typedef struct	s_info_inode {
 	char			*nameFile;
