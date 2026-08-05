@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/13 23:39:35 by rihoy             #+#    #+#             */
-/*   Updated: 2026/07/21 15:36:12 by rihoy            ###   ########.fr       */
+/*   Updated: 2026/08/05 16:32:59 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,8 @@ void	printOption(const int fd,
 size_t	lenNumber(int x, int lenghtBase) {
 	size_t	lenstr = 0;
 
+	if (x == 0)
+		return (1);
 	if (x < 0) {
 		if (x == INT_MIN)
 			x += 1;
@@ -108,11 +110,13 @@ int	numberIntprint(const int fd, va_list args) {
 	}
 
 	stringlen--;
-	while (x) {
+	while (x > 9) {
 		numberstr[stringlen] = ('0' + (x % 10));
 		stringlen--;
 		x /= 10;
 	}
+
+	numberstr[stringlen] = ('0' + (x % 10));
 
 	return (fprintfSelf(fd, "%s", numberstr));
 }
