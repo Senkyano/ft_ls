@@ -2,21 +2,25 @@
 NAME = ft_ls
 
 #---------------#
-#	includes
+#   includes & libs
 #---------------#
-UTILS =		utils
-INCLUDES =	include
+INCLUDES = include
+
+# 1. Emplacements de ta librairie
+LIB_DIR  = rithylib
+LIB_NAME = rithylib.a
+LIB_A    = $(LIB_DIR)/$(LIB_NAME)
 
 #--------------------------------------#
-#		Commande
+#       Commande
 #-----------------------#
 RM = rm -fr
 CC = gcc
-FLAGS = -Wall -Werror -Wextra -g -I $(INCLUDES)
-# FLAG_READLINE = -lreadline
-# FLAG_PHILO = -lpthread -D_REENTRANT
-# SANI_MEM = -fsanitize=address -fsanitize=leak -fsanitize=undefined
-# SANI = -fsanitize=address -fsanitize=leak -fsanitize=undefined
+
+# 2. Flags d'inclusion des headers (-I) et de liaison de la lib (-L et -l)
+# Note: -l:rithylib.a permet de lier directement le fichier .a sans renommage "lib"
+FLAGS = -Wall -Werror -Wextra -g -I $(INCLUDES) -I $(LIB_DIR)
+LDFLAGS = -L $(LIB_DIR) -l:$(LIB_NAME)
 
 #--------------------------------------#
 #       directory
@@ -27,51 +31,43 @@ OBJS = objs
 #--------------------------------------#
 #       Colors
 #-----------------------#
-C_B = \033[0;30m
-C_R = \033[1;31m
-C_G = \033[1;32m
-C_Y = \033[0;33m
-C_BU = \033[0;34m
-C_M = \033[0;35m
-C_C = \033[0;36m
-C_W = \033[0;37m
+C_R   = \033[1;31m
+C_G   = \033[1;32m
+C_W   = \033[0;37m
 RESET = \033[0m
 
-
 #--------------------------------------#
-#		File
+#       File
 #-----------------------#
-FILE_C =	main.c parsing.c fprintself.c strdupself.c exploringfile.c printinfols.c joinstr.c \
-			isspecial.c
+FILE_C = main.c parsing.c exploringfile.c printinfols.c joinstr.c
 
-SRC = $(addprefix $(SRCS)/, $(FILE_C))
 OBJ = $(patsubst %.c, $(OBJS)/%.o, $(FILE_C))
 
-# INIT_C = parsing
-
-# SRC_INIT = $(addprefix $(SRCS)/$(INIT)/, $(INIT_C))
-# OBJ_INIT = $(patsubst %.c, $(OBJS)/%.o, $(INIT_C))
 #--------------------------------------#
-#		Rules
+#       Rules
 #-----------------------#
 all : $(NAME)
 
-$(NAME) : $(OBJ)
-	@$(CC) $(FLAGS) -o $(NAME) $(OBJ)
+$(NAME) : $(LIB_A) $(OBJ)
+	@$(CC) $(FLAGS) -o $(NAME) $(OBJ) $(LDFLAGS)
+	@echo "$(C_G)Compilation de $(NAME) réussie !$(RESET)"
+
+$(LIB_A) :
+	@make -C $(LIB_DIR)
 
 $(OBJS)/%.o : $(SRCS)/%.c
-	mkdir -p $(OBJS)
+	@mkdir -p $(OBJS)
 	$(CC) $(FLAGS) -c $< -o $@
 
 clean :
+	@make -C $(LIB_DIR) clean
 	@$(RM) $(OBJS)
 	@echo "$(C_R)FILE '*.o' for $(NAME) deleted$(RESET)"
 
-fclean :
+fclean : clean
+	@make -C $(LIB_DIR) fclean
 	@$(RM) $(NAME)
-	@$(RM) $(OBJS)
-	@echo "$(C_W)FILE '*.o' for $(C_R)$(NAME) deleted$(RESET)"
-	@echo "Projet $(C_R)$(NAME) deleted$(RESET)"
+	@echo "$(C_W)FILE '$(NAME)' deleted$(RESET)"
 
 re : fclean all
 

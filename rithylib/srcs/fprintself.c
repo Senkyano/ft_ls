@@ -6,14 +6,14 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/13 23:39:35 by rihoy             #+#    #+#             */
-/*   Updated: 2026/08/05 16:32:59 by rihoy            ###   ########.fr       */
+/*   Updated: 2026/08/05 23:22:10 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ls.h"
+#include "rithylib.h"
+#include <stdio.h>
 #include <stdarg.h>
 #include <unistd.h>
-#include <stdio.h>
 
 int		charprint(const int fd, va_list args);
 int		strprint(const int fd, va_list args);

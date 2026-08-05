@@ -6,12 +6,11 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/09 22:39:18 by rihoy             #+#    #+#             */
-/*   Updated: 2026/07/09 22:44:12 by rihoy            ###   ########.fr       */
+/*   Updated: 2026/08/05 23:21:13 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ls.h"
-#include <stdbool.h>
+#include "rithylib.h"
 
 bool	isspecialchar(char c) {
 	
