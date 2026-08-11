@@ -16,4 +16,6 @@ int		strprint(const int fd, va_list args);
 int		numberIntprint(const int fd, va_list args);
 void	printOption(const int fd, const char option, int *lenght, va_list args);
 
+char	*strdupself(const char *src);
+
 #endif

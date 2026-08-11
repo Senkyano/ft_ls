@@ -6,11 +6,11 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/16 16:01:28 by rihoy             #+#    #+#             */
-/*   Updated: 2026/06/16 16:19:07 by rihoy            ###   ########.fr       */
+/*   Updated: 2026/08/11 12:51:21 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ls.h"
+#include "rithylib.h"
 #include <stdio.h>
 #include <stdlib.h>
 

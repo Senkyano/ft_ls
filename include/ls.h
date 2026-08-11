@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/12 15:32:44 by rihoy             #+#    #+#             */
-/*   Updated: 2026/07/30 15:54:25 by rihoy            ###   ########.fr       */
+/*   Updated: 2026/08/11 16:07:20 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,13 @@ typedef struct	s_info_inode t_info_inode;
 #include <errno.h>
 
 enum lsAttribute {
-	ATTR_ALL		= 1,
-	ATTR_RECURSIVE	= 2,
-	ATTR_REVERSE	= 4,
-	ATTR_SORTBYTIME = 8,
-	ATTR_LONGFORMAT = 16,
-	ATTR_STARTDIR	= 32,
+	ATTR_ALL			= 1,
+	ATTR_RECURSIVE		= 2,
+	ATTR_REVERSE		= 4,
+	ATTR_SORTBYTIME		= 8,
+	ATTR_LONGFORMAT		= 16,
+	ATTR_STARTDIR		= 32,
+	ATTR_REDIRECTION	= 64,
 };
 
 #define ALL_FLAGS (ATTR_ALL \
@@ -45,6 +46,7 @@ enum lsAttribute {
 typedef struct	s_info_ls {
 	t_info_inode	*filesList;
 	int				attrLs;
+	int				lenght_windows;
 }   			t_info_ls;
 
 enum fileAttribute {

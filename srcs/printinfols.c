@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/28 16:36:57 by rihoy             #+#    #+#             */
-/*   Updated: 2026/08/05 16:27:05 by rihoy            ###   ########.fr       */
+/*   Updated: 2026/08/11 16:48:06 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	printaccessfile(mode_t st_mode) {
 	}
 }
 
-void	print_infofile(const int attr, t_info_inode *file, const t_info_high hightest);
+int	print_infofile(const int attr, t_info_inode *file, const t_info_high hightest);
 
 void	printInfoLs(t_info_ls *infoLs) {
 	(void)infoLs;
@@ -43,6 +43,7 @@ void	printInfoLs(t_info_ls *infoLs) {
 	// struct dirent	*element;
 	int				act_depth = 0;
 	t_info_high		hightest = {0};
+	static int	lenght_line;
 
 	(void)hightest;
 	tmp = infoLs->filesList;
@@ -58,11 +59,15 @@ void	printInfoLs(t_info_ls *infoLs) {
 				act_depth = tmp->depth + 1;
 			}
 			else {
-				print_infofile(infoLs->attrLs, tmp, hightest);
+				lenght_line += print_infofile(infoLs->attrLs, tmp, hightest);
+				if (lenght_line > 81 && tmp->nextFile) {
+					fprintfSelf(1, "\n");
+					lenght_line = 0;
+				}
 			}
 			if (tmp->nextFile) {
 				// si il y a une redirection on fait un \n aux lieux de l'autre
-				fprintfSelf(1, "%s", (infoLs->attrLs & ATTR_LONGFORMAT ? "\n" : "  "));
+				fprintfSelf(1, "%s", (infoLs->attrLs & ATTR_LONGFORMAT || infoLs->attrLs & ATTR_REDIRECTION ? "\n" : "   "));
 			}
 			tmp = tmp->nextFile;
 			if (tmp && act_depth > tmp->depth) {
@@ -75,7 +80,7 @@ void	printInfoLs(t_info_ls *infoLs) {
 		fprintfSelf(1, "\n");
 }
 
-void	print_infofile(const int attr, t_info_inode *file, const t_info_high hightest) {
+int	print_infofile(const int attr, t_info_inode *file, const t_info_high hightest) {
 	(void)hightest;
 	if (attr & ATTR_LONGFORMAT) {
 		mode_t	modeFile = file->st_mode;
@@ -112,8 +117,6 @@ void	print_infofile(const int attr, t_info_inode *file, const t_info_high highte
 
 		fprintfSelf(1 ,"%d ", file->sizeFile);
 		fprintfSelf(1, "%s ", temp);
-
-		
 	}
 	bool	specialcaracteres;
 	specialcaracteres = containSpecial(file->nameFile);
@@ -123,4 +126,5 @@ void	print_infofile(const int attr, t_info_inode *file, const t_info_high highte
 	fprintfSelf(1, "%s", file->nameFile);
 	if (specialcaracteres)
 		fprintfSelf(1, "'");
+	return (strlenSelf(file->nameFile));
 }

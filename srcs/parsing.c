@@ -6,13 +6,15 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/12 15:29:57 by rihoy             #+#    #+#             */
-/*   Updated: 2026/07/22 16:45:20 by rihoy            ###   ########.fr       */
+/*   Updated: 2026/08/11 16:47:21 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <dirent.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
+#include <string.h>
 #include "ls.h"
 
 void	setAttr(const char *str, t_info_ls *infoLs) {
@@ -131,12 +133,12 @@ int		is_uppercase(unsigned char c) {
 	return (0);
 }
 
+#include <locale.h>
 // reshape
 // on ne peut pas faire identique aux meme car il faut acceder aussi a la table ascii local pour bien les triés
 int		attrcmpLs(void *nodecheck, void *newnode, const int attrLs) {
 	t_info_inode	*nodechecking;
 	t_info_inode	*newnodecheck;
-	size_t			i = 0;
 	int				return_value = 0;
 
 	nodechecking = (t_info_inode *)nodecheck;
@@ -150,14 +152,7 @@ int		attrcmpLs(void *nodecheck, void *newnode, const int attrLs) {
 		}
 	}
 
-	while (nodechecking->nameFile && newnodecheck->nameFile
-			&& nodechecking->nameFile[i] && newnodecheck->nameFile[i]) {
-		return_value = (unsigned char)nodechecking->nameFile[i]
-						- (unsigned char)newnodecheck->nameFile[i];
-		if (return_value != 0)
-			break ;
-		i++;
-	}
+	return_value = strcoll(nodechecking->nameFile, newnodecheck->nameFile);
 
 	return (attrLs & ATTR_REVERSE ? -return_value : return_value);
 }
@@ -175,6 +170,8 @@ void	seeInfo(t_info_ls *infoLs) {
 		(infoLs->attrLs & ATTR_ALL ? "vraie" : "faux"));
 	fprintfSelf(2, "Attribue in Directory: %s\n",
 		(infoLs->attrLs & ATTR_STARTDIR ? "vraie" : "faux"));
+	fprintfSelf(2, "Attribue in REDIRECTION: %s\n",
+		(infoLs->attrLs & ATTR_REDIRECTION ? "vraie" : "faux"));
 	
 	t_info_inode	*tmp;
 	tmp = infoLs->filesList;
