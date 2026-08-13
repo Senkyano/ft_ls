@@ -19,7 +19,7 @@ CC = gcc
 
 # 2. Flags d'inclusion des headers (-I) et de liaison de la lib (-L et -l)
 # Note: -l:rithylib.a permet de lier directement le fichier .a sans renommage "lib"
-FLAGS = -Wall -Werror -Wextra -g -I $(INCLUDES) -I $(LIB_DIR)
+FLAGS = -Wall -Werror -Wextra -g -I $(INCLUDES) -I $(LIB_DIR)/include
 LDFLAGS = -L $(LIB_DIR) -l:$(LIB_NAME)
 
 #--------------------------------------#
@@ -39,7 +39,7 @@ RESET = \033[0m
 #--------------------------------------#
 #       File
 #-----------------------#
-FILE_C = main.c parsing.c exploringfile.c printinfols.c joinstr.c
+FILE_C = main.c parsing.c exploringfile.c printinfols.c
 
 OBJ = $(patsubst %.c, $(OBJS)/%.o, $(FILE_C))
 

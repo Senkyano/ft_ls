@@ -1,7 +1,8 @@
 FILE_C = isspecial.c \
 		 fprintself.c \
 		 strdupself.c \
-		 strlen.c
+		 strlen.c \
+		 joinstr.c
 
 NAME = rithylib.a
 

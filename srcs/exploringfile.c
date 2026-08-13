@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/28 13:31:50 by rihoy             #+#    #+#             */
-/*   Updated: 2026/07/22 16:46:33 by rihoy            ###   ########.fr       */
+/*   Updated: 2026/08/13 10:47:23 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int	exploringInfo(t_info_ls *infoLs) {
 				free(model.nameFile);
 				model.nameFile = NULL;
 			} else {
-				model.fullpath = strdupself(element->d_name);
+				model.fullpath = joinstrwsep(".", "/", element->d_name);
 
 				if (!model.fullpath) {
 					free(model.nameFile);

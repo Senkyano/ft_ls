@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/12 15:29:57 by rihoy             #+#    #+#             */
-/*   Updated: 2026/08/11 16:47:21 by rihoy            ###   ########.fr       */
+/*   Updated: 2026/08/13 10:53:44 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include <unistd.h>
 #include <string.h>
 #include "ls.h"
+#include "rithylib.h"
 
 void	setAttr(const char *str, t_info_ls *infoLs) {
 	static const int ascii_table[256] = {
@@ -71,6 +72,7 @@ void	*parsingInfoLs(const int argc, const char **argv, t_info_ls *infoLs) {
 				}
 				free(model.nameFile); free (model.fullpath);
 			} else {
+				model.attrFile |= ATTR_STARTFILE;
 				model.last_modification = modelstat.st_mtime;
 				model.nblink = modelstat.st_nlink;
 				model.userId = modelstat.st_uid;
@@ -83,7 +85,8 @@ void	*parsingInfoLs(const int argc, const char **argv, t_info_ls *infoLs) {
 					if (model.fullpath)
 						free(model.fullpath);
 				}
-			}	
+			}
+			model.attrFile = 0;
 		}
 	}
 	return (infoLs->filesList);
@@ -105,7 +108,7 @@ void	*addCmpList(t_info_inode **list, t_info_inode model, t_func_cmplist cmpfunc
 
 	new_node->nameFile = model.nameFile;
 	new_node->fullpath = model.fullpath;
-	new_node->attrFile = 0;
+	new_node->attrFile = model.attrFile;
 	new_node->nblink = model.nblink;
 	new_node->last_modification = model.last_modification;
 	new_node->userId = model.userId;
