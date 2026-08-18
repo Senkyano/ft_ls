@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/28 16:36:57 by rihoy             #+#    #+#             */
-/*   Updated: 2026/08/11 16:48:06 by rihoy            ###   ########.fr       */
+/*   Updated: 2026/08/18 22:55:17 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,44 +37,14 @@ void	printaccessfile(mode_t st_mode) {
 int	print_infofile(const int attr, t_info_inode *file, const t_info_high hightest);
 
 void	printInfoLs(t_info_ls *infoLs) {
-	(void)infoLs;
 	t_info_inode	*tmp;
-	// DIR				*dossier;
-	// struct dirent	*element;
 	int				act_depth = 0;
 	t_info_high		hightest = {0};
-	static int	lenght_line;
+	static unsigned int	lenght_line;
 
-	(void)hightest;
 	tmp = infoLs->filesList;
-	if (!(infoLs->attrLs & ATTR_RECURSIVE)) {
-		while (tmp) {
-			if (infoLs->attrLs & ATTR_LONGFORMAT) {
-				if (tmp->depth == act_depth) {
-					// calcul lenght of number
-				}
-			}
-			if ((tmp->attrFile & ATTR_DIRECTORY) && act_depth == tmp->depth) {
-				fprintfSelf(1 ,"%s:\n", tmp->nameFile);
-				act_depth = tmp->depth + 1;
-			}
-			else {
-				lenght_line += print_infofile(infoLs->attrLs, tmp, hightest);
-				if (lenght_line > 81 && tmp->nextFile) {
-					fprintfSelf(1, "\n");
-					lenght_line = 0;
-				}
-			}
-			if (tmp->nextFile) {
-				// si il y a une redirection on fait un \n aux lieux de l'autre
-				fprintfSelf(1, "%s", (infoLs->attrLs & ATTR_LONGFORMAT || infoLs->attrLs & ATTR_REDIRECTION ? "\n" : "   "));
-			}
-			tmp = tmp->nextFile;
-			if (tmp && act_depth > tmp->depth) {
-				fprintfSelf(1, "\n\n");
-				act_depth = tmp->depth;
-			}
-		}
+	while (tmp) {
+		if 
 	}
 	if (infoLs->filesList)
 		fprintfSelf(1, "\n");

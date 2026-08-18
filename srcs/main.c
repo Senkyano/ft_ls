@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/12 14:59:14 by rihoy             #+#    #+#             */
-/*   Updated: 2026/08/13 10:38:10 by rihoy            ###   ########.fr       */
+/*   Updated: 2026/08/18 22:36:52 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,6 @@
 #include "ls.h"
 #include <locale.h>
 #include <sys/ioctl.h>
-
-// void	actionPrint(t_info_ls *infoLs) {
-// 	DIR *dossier = opendir(infoLs->currentDir);
-
-// }
 
 int main(const int argc, const char **argv) {
 	t_info_ls	infoLs = {0}; // initialisation moderne
@@ -40,8 +35,9 @@ int main(const int argc, const char **argv) {
 
 	parsingInfoLs(argc, argv, &infoLs);
 	exploringInfo(&infoLs);
-	seeInfo(&infoLs);
-	// printInfoLs(&infoLs);
+	printInfoLs(&infoLs);
+	// seeInfo(&infoLs);
+	printf("%d\n", infoLs.windows_width);
 	freeInfoInode(&infoLs.filesList);
 	return (0);	
 }

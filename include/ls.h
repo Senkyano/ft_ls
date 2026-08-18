@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/12 15:32:44 by rihoy             #+#    #+#             */
-/*   Updated: 2026/08/13 10:50:07 by rihoy            ###   ########.fr       */
+/*   Updated: 2026/08/18 23:00:01 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ enum fileAttribute {
 };
 
 typedef struct	s_info_high {
-	int				size_char_sizeFile;
+	int				max_char_sizeFile;
 }	t_info_high;
 
 typedef struct	s_info_inode {

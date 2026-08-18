@@ -36,4 +36,14 @@ char	*strdupself(const char *src);
 char	*strjoin_save(char *str, char *str2);
 char	*joinstrwsep(char *str1, char *sep, char *str2);
 
+/*		File : datalist
+*/
+typedef struct	s_voidlist {
+	void		*data;
+	t_voidlist	*next;
+}	t_voidlist;
+void	list_addback(t_voidlist **list, void *data);
+
+
+
 #endif

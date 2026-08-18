@@ -1,0 +1,101 @@
+$m
+Makefile
+a
+exemple_ls
+ft_ls
+include
+objs
+p
+pm
+po
+rithylib
+srcs
+test_ls.sh
+
+
+total 96
+drwxr-xr-x 2 senka senka  4096 Jul  9 15:47 $m
+-rw-r--r-- 1 senka senka  1625 Aug 13 15:19 Makefile
+drwxr-xr-x 2 senka senka  4096 Jul  7 21:47 a
+-rw-r--r-- 1 senka senka    79 Aug 18 22:56 exemple_ls
+-rwxr-xr-x 1 senka senka 43240 Aug 18 22:41 ft_ls
+drwxr-xr-x 2 senka senka  4096 Aug 13 15:19 include
+drwxr-xr-x 2 senka senka  4096 Aug 18 22:41 objs
+drwxr-xr-x 2 senka senka  4096 Jul  9 15:45 p
+-rw-r--r-- 1 senka senka    54 Jul 22 16:53 pm
+-rw-r--r-- 1 senka senka    99 Jul 22 16:53 po
+drwxr-xr-x 5 senka senka  4096 Aug 18 22:33 rithylib
+drwxr-xr-x 2 senka senka  4096 Aug 13 15:19 srcs
+-rw-r--r-- 1 senka senka  4447 Jul 22 16:51 test_ls.sh
+
+.:
+total 96
+drwxr-xr-x 2 senka senka  4096 Jul  9 15:47 $m
+-rw-r--r-- 1 senka senka  1625 Aug 13 15:19 Makefile
+drwxr-xr-x 2 senka senka  4096 Jul  7 21:47 a
+-rw-r--r-- 1 senka senka  1395 Aug 18 22:57 exemple_ls
+-rwxr-xr-x 1 senka senka 43240 Aug 18 22:41 ft_ls
+drwxr-xr-x 2 senka senka  4096 Aug 13 15:19 include
+drwxr-xr-x 2 senka senka  4096 Aug 18 22:41 objs
+drwxr-xr-x 2 senka senka  4096 Jul  9 15:45 p
+-rw-r--r-- 1 senka senka    54 Jul 22 16:53 pm
+-rw-r--r-- 1 senka senka    99 Jul 22 16:53 po
+drwxr-xr-x 5 senka senka  4096 Aug 18 22:33 rithylib
+drwxr-xr-x 2 senka senka  4096 Aug 13 15:19 srcs
+-rw-r--r-- 1 senka senka  4447 Jul 22 16:51 test_ls.sh
+
+./$m:
+total 0
+
+./a:
+total 0
+
+./include:
+total 8
+-rw-r--r-- 1 senka senka  267 Jul 21 15:35 color.h
+-rw-r--r-- 1 senka senka 2590 Aug 13 15:19 ls.h
+
+./objs:
+total 56
+-rw-r--r-- 1 senka senka 11688 Aug 18 22:33 exploringfile.o
+-rw-r--r-- 1 senka senka  7904 Aug 18 22:36 main.o
+-rw-r--r-- 1 senka senka 17968 Aug 18 22:33 parsing.o
+-rw-r--r-- 1 senka senka 12784 Aug 18 22:41 printinfols.o
+
+./p:
+total 0
+
+./rithylib:
+total 32
+-rw-r--r-- 1 senka senka   553 Aug 13 15:19 Makefile
+drwxr-xr-x 2 senka senka  4096 Aug 13 15:19 include
+drwxr-xr-x 2 senka senka  4096 Aug 18 22:33 objs
+-rw-r--r-- 1 senka senka 13900 Aug 18 22:33 rithylib.a
+drwxr-xr-x 2 senka senka  4096 Aug 13 15:19 srcs
+
+./rithylib/include:
+total 4
+-rw-r--r-- 1 senka senka 934 Aug 13 15:19 rithylib.h
+
+./rithylib/objs:
+total 24
+-rw-r--r-- 1 senka senka 6536 Aug 18 22:33 fprintself.o
+-rw-r--r-- 1 senka senka 1688 Aug 18 22:33 isspecial.o
+-rw-r--r-- 1 senka senka 2312 Aug 18 22:33 joinstr.o
+-rw-r--r-- 1 senka senka 1520 Aug 18 22:33 strdupself.o
+-rw-r--r-- 1 senka senka 1280 Aug 18 22:33 strlen.o
+
+./rithylib/srcs:
+total 20
+-rw-r--r-- 1 senka senka 3329 Aug 13 15:19 fprintself.c
+-rw-r--r-- 1 senka senka 1449 Aug  5 23:21 isspecial.c
+-rw-r--r-- 1 senka senka 1999 Aug 13 15:19 joinstr.c
+-rw-r--r-- 1 senka senka 1267 Aug 13 15:19 strdupself.c
+-rw-r--r-- 1 senka senka  155 Aug 13 15:19 strlen.c
+
+./srcs:
+total 20
+-rw-r--r-- 1 senka senka 3550 Aug 13 15:19 exploringfile.c
+-rw-r--r-- 1 senka senka 1560 Aug 18 22:36 main.c
+-rw-r--r-- 1 senka senka 6247 Aug 13 15:19 parsing.c
+-rw-r--r-- 1 senka senka 3209 Aug 18 22:55 printinfols.c
