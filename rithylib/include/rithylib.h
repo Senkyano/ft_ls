@@ -40,9 +40,10 @@ char	*joinstrwsep(char *str1, char *sep, char *str2);
 */
 typedef struct	s_voidlist {
 	void		*data;
-	t_voidlist	*next;
+	struct t_voidlist	*next;
 }	t_voidlist;
-void	list_addback(t_voidlist **list, void *data);
+
+void	*list_addback(t_voidlist **list, void *data);
 
 
 

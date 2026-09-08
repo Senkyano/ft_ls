@@ -39,7 +39,7 @@ RESET = \033[0m
 #--------------------------------------#
 #       File
 #-----------------------#
-FILE_C = main.c parsing.c exploringfile.c printinfols.c
+FILE_C = main.c parsing.c exploringfile.c printinfols.c fillhightest.c
 
 OBJ = $(patsubst %.c, $(OBJS)/%.o, $(FILE_C))
 

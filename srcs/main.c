@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/12 14:59:14 by rihoy             #+#    #+#             */
-/*   Updated: 2026/08/18 22:36:52 by rihoy            ###   ########.fr       */
+/*   Updated: 2026/09/08 16:10:43 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,12 @@ int main(const int argc, const char **argv) {
 
 	parsingInfoLs(argc, argv, &infoLs);
 	exploringInfo(&infoLs);
-	printInfoLs(&infoLs);
 	// seeInfo(&infoLs);
-	printf("%d\n", infoLs.windows_width);
+	if (infoLs.attrLs & ATTR_STARTDIR) {
+		printf("ok\n");
+	} else {
+		printInfoLs(&infoLs);
+	}
 	freeInfoInode(&infoLs.filesList);
 	return (0);	
 }

@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/12 15:29:57 by rihoy             #+#    #+#             */
-/*   Updated: 2026/08/13 10:53:44 by rihoy            ###   ########.fr       */
+/*   Updated: 2026/09/08 17:52:18 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ void	*parsingInfoLs(const int argc, const char **argv, t_info_ls *infoLs) {
 				model.userId = modelstat.st_uid;
 				model.grId = modelstat.st_gid;
 				model.sizeFile = modelstat.st_size;
+				model.st_block = modelstat.st_blocks;
 				model.st_mode = modelstat.st_mode;
 				if (!addCmpList(&infoLs->filesList, model, &attrcmpLs, infoLs->attrLs)) {
 					if (model.nameFile)
@@ -114,6 +115,7 @@ void	*addCmpList(t_info_inode **list, t_info_inode model, t_func_cmplist cmpfunc
 	new_node->userId = model.userId;
 	new_node->grId = model.grId;
 	new_node->sizeFile = model.sizeFile;
+	new_node->st_block = model.st_block;
 	new_node->st_mode = model.st_mode;
 	new_node->depth = model.depth;
 	new_node->nextFile = NULL;

@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/28 16:36:57 by rihoy             #+#    #+#             */
-/*   Updated: 2026/08/18 22:55:17 by rihoy            ###   ########.fr       */
+/*   Updated: 2026/09/08 18:22:39 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 #include <stdio.h>
 #include "color.h"
 #include <grp.h>
+#include <dirent.h>
+
 
 void	printaccessfile(mode_t st_mode) {
 	if (S_ISREG(st_mode)) {
@@ -38,13 +40,44 @@ int	print_infofile(const int attr, t_info_inode *file, const t_info_high hightes
 
 void	printInfoLs(t_info_ls *infoLs) {
 	t_info_inode	*tmp;
-	int				act_depth = 0;
+	t_info_inode	*treatment;
+	// DIR				*dossier;
+	// struct dirent	*element;
 	t_info_high		hightest = {0};
-	static unsigned int	lenght_line;
+	int				act_depth = 0;
+	// static unsigned int	lenght_line;
+
+	tmp = infoLs->filesList;
+	if (infoLs->attrLs & ATTR_RECURSIVE)
+		fprintfSelf(1, ".:\n");
+		
+	treatment = tmp;
+	while (treatment) {
+		if (treatment->depth == act_depth) {
+			size_t	treatLen = lenNumber(treatment->sizeFile, 10);
+			size_t	treatLenblink = lenNumber(treatment->nblink, 10);
+			hightest.max_char_sizeFile = treatLen > (size_t)hightest.max_char_sizeFile ? (int)treatLen : hightest.max_char_sizeFile;
+			hightest.max_char_nblink = treatLenblink > (size_t)hightest.max_char_nblink ? (int)treatLenblink : hightest.max_char_nblink;
+			hightest.total_stblock += treatment->st_block;
+		}
+		treatment = treatment->nextFile;
+	}
+	if (infoLs->attrLs & ATTR_LONGFORMAT)
+		fprintfSelf(1, "total %d\n", (int)(hightest.total_stblock / 2));
+	while (tmp) {
+		print_infofile(infoLs->attrLs, tmp, hightest);
+		if (tmp->nextFile && (infoLs->attrLs & (ATTR_REDIRECTION | ATTR_LONGFORMAT))) {
+			fprintfSelf(1, "\n");
+		} else if (tmp->nextFile) {
+			fprintfSelf(1, "   ");
+		}
+		tmp = tmp->nextFile;
+	}
+// in directory for -R
 
 	tmp = infoLs->filesList;
 	while (tmp) {
-		if 
+		tmp = tmp->nextFile;
 	}
 	if (infoLs->filesList)
 		fprintfSelf(1, "\n");
@@ -64,6 +97,10 @@ int	print_infofile(const int attr, t_info_inode *file, const t_info_high hightes
 												(S_IROTH & modeFile) ? 'r' : '-',
 												(S_IWOTH & modeFile) ? 'w' : '-',
 												(S_IXOTH & modeFile) ? 'x' : '-');
+		int n = hightest.max_char_nblink - lenNumber(file->nblink, 10);
+		while (n) {
+			fprintfSelf(1, " ");n--;
+		}
 		fprintfSelf(1, "%d ", file->nblink);
 		char *temp = ctime(&file->last_modification);
 
@@ -75,6 +112,7 @@ int	print_infofile(const int attr, t_info_inode *file, const t_info_high hightes
 			i--;
 		}
 		temp[i] = 0;
+
 		// proprietaire
 		struct passwd *uid;
 		uid = getpwuid(file->userId);
@@ -85,16 +123,20 @@ int	print_infofile(const int attr, t_info_inode *file, const t_info_high hightes
 		if (gid->gr_name)
 			fprintfSelf(1, "%s ", gid->gr_name);
 
-		fprintfSelf(1 ,"%d ", file->sizeFile);
-		fprintfSelf(1, "%s ", temp);
+		n = hightest.max_char_sizeFile - lenNumber(file->sizeFile, 10);
+		while (n) {
+			fprintfSelf(1, " ");n--;
+		}
+		fprintfSelf(1 ,"%d", file->sizeFile);
+		fprintfSelf(1, "%s ", temp + 3);
 	}
 	bool	specialcaracteres;
 	specialcaracteres = containSpecial(file->nameFile);
 
-	if (specialcaracteres)
+	if (specialcaracteres && !(attr & ATTR_REDIRECTION))
 		fprintfSelf(1, "'");
 	fprintfSelf(1, "%s", file->nameFile);
-	if (specialcaracteres)
+	if (specialcaracteres && !(attr & ATTR_REDIRECTION))
 		fprintfSelf(1, "'");
 	return (strlenSelf(file->nameFile));
 }

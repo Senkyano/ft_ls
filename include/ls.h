@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/12 15:32:44 by rihoy             #+#    #+#             */
-/*   Updated: 2026/08/18 23:00:01 by rihoy            ###   ########.fr       */
+/*   Updated: 2026/09/08 18:18:28 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,10 @@ enum fileAttribute {
 
 typedef struct	s_info_high {
 	int				max_char_sizeFile;
+	int				max_char_nameFile;
+	int				max_char_nblink;
+	bool			depth_entry;
+	blkcnt_t		total_stblock;
 }	t_info_high;
 
 typedef struct	s_info_inode {
@@ -73,6 +77,7 @@ typedef struct	s_info_inode {
 	uid_t			userId;
 	gid_t			grId;
 	off_t			sizeFile;
+	blkcnt_t		st_block;
 	mode_t			st_mode;
 	int				depth;
 	t_info_inode	*nextFile;
@@ -89,5 +94,6 @@ int		exploringInfo(t_info_ls *infoLs);
 char	*strdupself(const char *src);
 void	seeInfo(t_info_ls *infoLs);
 void	printInfoLs(t_info_ls *infoLs);
+void	resetHightest(t_info_high *hightest);
 
 #endif
